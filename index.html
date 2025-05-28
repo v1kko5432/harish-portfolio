@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hari Vignesh - Portfolio</title>
+    <meta name="description" content="Personal Portfolio of Hari Vignesh - Developer, Gamer, Cricket Lover">
+    <meta name="author" content="Hari Vignesh">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .portfolio-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: auto;
+        }
+
+        /* Hero Slide */
+        .hero-slide {
+            background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 50%, #4338ca 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .bg-element-1 {
+            width: 128px;
+            height: 128px;
+            background: #3b82f6;
+            top: 80px;
+            left: 80px;
+            animation: pulse 2s infinite;
+        }
+
+        .bg-element-2 {
+            width: 96px;
+            height: 96px;
+            background: #8b5cf6;
+            bottom: 80px;
+            right: 80px;
+            animation: bounce 2s infinite;
+        }
+
+        .bg-element-3 {
+            width: 64px;
+            height: 64px;
+            background: #06b6d4;
+            top: 50%;
+            left: 40px;
+            animation: ping 2s infinite;
+        }
+
+        .hero-content {
+            z-index: 10;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-icons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .icon-container {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: bounce 2s infinite;
+        }
+
+        .gradient-blue-purple {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+        .gradient-purple-pink {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+
+        .gradient-cyan-blue {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+        }
+
+        .gradient-green-teal {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+        }
+
+        .gradient-orange-red {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+        }
+
+        .gradient-blue-cyan {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #22d3ee, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            animation: scaleIn 0.8s ease-out 0.3s both;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 3vw, 1.875rem);
+            color: #d1d5db;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 48px;
+            color: #9ca3af;
+            animation: fadeInUp 0.8s ease-out 0.9s both;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: bounce 1s infinite;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* About Slide */
+        .about-slide {
+            background: linear-gradient(135deg, #4338ca 0%, #8b5cf6 50%, #ec4899 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .about-bg .rotating-ring {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .ring-1 {
+            width: 160px;
+            height: 160px;
+            top: 40px;
+            right: 40px;
+            animation: spin 10s linear infinite;
+        }
+
+        .ring-2 {
+            width: 128px;
+            height: 128px;
+            bottom: 40px;
+            left: 40px;
+            animation: spin 15s linear infinite reverse;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+            margin-bottom: 48px;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #22d3ee;
+        }
+
+        .info-list p {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-list span {
+            font-weight: 600;
+            color: white;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .drives-me {
+            animation-delay: 0.3s;
+        }
+
+        .philosophy {
+            animation-delay: 0.6s;
+        }
+
+        /* Education Slide */
+        .education-slide {
+            background: linear-gradient(135deg, #065f46 0%, #0891b2 50%, #1e40af 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .education-bg .floating-element {
+            position: absolute;
+            border-radius: 8px;
+            opacity: 0.2;
+        }
+
+        .element-1 {
+            width: 80px;
+            height: 80px;
+            background: #10b981;
+            top: 80px;
+            left: 25%;
+            animation: bounce 3s infinite;
+        }
+
+        .element-2 {
+            width: 64px;
+            height: 64px;
+            background: #14b8a6;
+            bottom: 80px;
+            right: 25%;
+            animation: bounce 3s infinite 1s;
+        }
+
+        .element-3 {
+            width: 48px;
+            height: 48px;
+            background: #3b82f6;
+            top: 50%;
+            right: 80px;
+            animation: bounce 3s infinite 2s;
+        }
+
+        .education-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .education-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: white;
+        }
+
+        .education-card h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #3b82f6;
+        }
+
+        .education-item h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            color: #d1d5db;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skill-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.125rem;
+            color: white;
+        }
+
+        .java .skill-icon {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+        }
+
+        .tally .skill-icon {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+        }
+
+        .skill-info h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #22d3ee;
+        }
+
+        .skill-info p {
+            font-size: 0.875rem;
+            color: #d1d5db;
+        }
+
+        /* Hobbies Slide */
+        .hobbies-slide {
+            background: linear-gradient(135deg, #9a3412 0%, #dc2626 50%, #ec4899 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .hobbies-bg .pulse-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .pulse-1 {
+            width: 96px;
+            height: 96px;
+            background: #f97316;
+            top: 40px;
+            left: 40px;
+            animation: pulse 3s infinite;
+        }
+
+        .pulse-2 {
+            width: 128px;
+            height: 128px;
+            background: #ef4444;
+            bottom: 40px;
+            right: 40px;
+            animation: pulse 3s infinite 1s;
+        }
+
+        .pulse-3 {
+            width: 160px;
+            height: 160px;
+            background: #ec4899;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ping 3s infinite;
+        }
+
+        .hobby-icons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .hobby-icons .icon-container {
+            animation-delay: 0s;
+        }
+
+        .hobby-icons .icon-container:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .hobby-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hobby-card:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .hobby-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .hobby-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: white;
+        }
+
+        .anime-icon {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .hobby-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #8b5cf6;
+        }
+
+        .hobby-card p {
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .hobby-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .hobby-tags span {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            color: #d1d5db;
+        }
+
+        .balance-section {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(236, 72, 153, 0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .balance-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #f97316;
+        }
+
+        /* Contact Slide */
+        .contact-slide {
+            background: linear-gradient(135deg, #164e63 0%, #1e40af 50%, #8b5cf6 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .contact-bg .spinning-ring {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .contact-icons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .contact-icons .icon-container {
+            animation-delay: 0s;
+        }
+
+        .contact-icons .icon-container:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .contact-icons .icon-container:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .contact-card:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .contact-card h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #06b6d4;
+        }
+
+        .contact-item {
+            margin-bottom: 24px;
+        }
+
+        .contact-item h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .contact-item p, .contact-item ul {
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        .contact-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .contact-item li {
+            margin-bottom: 8px;
+        }
+
+        .contact-item li:before {
+            content: "• ";
+            color: #10b981;
+            margin-right: 8px;
+        }
+
+        .learning-note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(20, 184, 166, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .learning-note h4 {
+            color: #10b981;
+        }
+
+        .thank-you {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .thank-you h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #06b6d4;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+
+        .nav-btn.next:hover {
+            background: linear-gradient(135deg, #7c3aed, #db2777);
+        }
+
+        .restart {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+        }
+
+        .restart:hover {
+            background: linear-gradient(135deg, #0891b2, #7c3aed);
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #3b82f6;
+            transform: scale(1.2);
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40%, 43% {
+                transform: translateY(-15px);
+            }
+            70% {
+                transform: translateY(-7px);
+            }
+            90% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-grid,
+            .education-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .hobbies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .slide-content {
+                padding: 40px 0;
+            }
+            
+            .hero-icons,
+            .hobby-icons,
+            .contact-icons {
+                gap: 12px;
+            }
+            
+            .icon-container {
+                width: 48px;
+                height: 48px;
+            }
+            
+            .bg-element-1 {
+                width: 80px;
+                height: 80px;
+                top: 40px;
+                left: 40px;
+            }
+            
+            .bg-element-2 {
+                width: 60px;
+                height: 60px;
+                bottom: 40px;
+                right: 40px;
+            }
+            
+            .bg-element-3 {
+                width: 40px;
+                height: 40px;
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+            
+            .about-card,
+            .education-card,
+            .hobby-card,
+            .contact-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <!-- Slide 1: Hero -->
+        <div class="slide active" id="slide-1">
+            <div class="slide-content hero-slide">
+                <div class="animated-bg">
+                    <div class="bg-element bg-element-1"></div>
+                    <div class="bg-element bg-element-2"></div>
+                    <div class="bg-element bg-element-3"></div>
+                </div>
+                
+                <div class="hero-content">
+                    <div class="hero-icons">
+                        <div class="icon-container gradient-blue-purple">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <div class="icon-container gradient-purple-pink">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                                <path d="M12 18h.01"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <h1 class="hero-title">HARI VIGNESH</h1>
+                    <p class="hero-subtitle">Developer • Gamer • Cricket Lover</p>
+                    
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span>Ready to explore my journey</span>
+                    </div>
+                    
+                    <button class="cta-button" onclick="nextSlide()">
+                        Enter Portfolio →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: About -->
+        <div class="slide" id="slide-2">
+            <div class="slide-content about-slide">
+                <div class="animated-bg about-bg">
+                    <div class="rotating-ring ring-1"></div>
+                    <div class="rotating-ring ring-2"></div>
+                </div>
+                
+                <div class="container">
+                    <div class="section-header">
+                        <div class="icon-container gradient-cyan-blue">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <h2 class="section-title">About Me</h2>
+                    </div>
+                    
+                    <div class="about-grid">
+                        <div class="about-card personal-info">
+                            <h3>Personal Info</h3>
+                            <div class="info-list">
+                                <p><span>Name:</span> Hari Vignesh</p>
+                                <p><span>Age:</span> 20 years old</p>
+                                <p><span>Education:</span> Under Graduate (BCA)</p>
+                                <p><span>Status:</span> Passionate Developer</p>
+                            </div>
+                        </div>
+                        
+                        <div class="about-content">
+                            <div class="about-card drives-me">
+                                <h3>What Drives Me</h3>
+                                <p>I'm a 20-year-old BCA student with a passion for technology and creativity. I believe in the power of code to transform ideas into reality, and I'm constantly exploring new ways to blend my technical skills with my diverse interests.</p>
+                            </div>
+                            
+                            <div class="about-card philosophy">
+                                <h3>My Philosophy</h3>
+                                <p>"Code like you're building the future, play like every game matters, and dream like anime has taught you that anything is possible."</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="nav-btn prev" onclick="prevSlide()">← Previous</button>
+                        <button class="nav-btn next" onclick="nextSlide()">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Education & Skills -->
+        <div class="slide" id="slide-3">
+            <div class="slide-content education-slide">
+                <div class="animated-bg education-bg">
+                    <div class="floating-element element-1"></div>
+                    <div class="floating-element element-2"></div>
+                    <div class="floating-element element-3"></div>
+                </div>
+                
+                <div class="container">
+                    <div class="section-header">
+                        <div class="icon-container gradient-green-teal">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                            </svg>
+                        </div>
+                        <h2 class="section-title">Education & Skills</h2>
+                    </div>
+                    
+                    <div class="education-grid">
+                        <div class="education-card">
+                            <div class="card-icon gradient-blue-purple">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                                </svg>
+                            </div>
+                            <h3>Education</h3>
+                            <div class="education-item">
+                                <h4>Bachelor of Computer Applications</h4>
+                                <p class="status">Currently Pursuing</p>
+                                <p class="description">Building strong foundation in computer science, programming, and software development</p>
+                            </div>
+                        </div>
+                        
+                        <div class="education-card">
+                            <div class="card-icon gradient-green-teal">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                            </div>
+                            <h3>Technical Skills</h3>
+                            
+                            <div class="skills-list">
+                                <div class="skill-item java">
+                                    <div class="skill-icon">J</div>
+                                    <div class="skill-info">
+                                        <h4>Java Programming</h4>
+                                        <p>Object-oriented programming, data structures, and application development</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item tally">
+                                    <div class="skill-icon">T</div>
+                                    <div class="skill-info">
+                                        <h4>Tally</h4>
+                                        <p>Financial accounting, inventory management, and business operations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="nav-btn prev" onclick="prevSlide()">← Previous</button>
+                        <button class="nav-btn next" onclick="nextSlide()">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Hobbies -->
+        <div class="slide" id="slide-4">
+            <div class="slide-content hobbies-slide">
+                <div class="animated-bg hobbies-bg">
+                    <div class="pulse-element pulse-1"></div>
+                    <div class="pulse-element pulse-2"></div>
+                    <div class="pulse-element pulse-3"></div>
+                </div>
+                
+                <div class="container">
+                    <div class="section-header">
+                        <div class="hobby-icons">
+                            <div class="icon-container gradient-orange-red">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                                    <path d="M12 18h.01"></path>
+                                </svg>
+                            </div>
+                            <div class="icon-container gradient-green-teal">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                    <path d="M4 22h16"></path>
+                                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h2 class="section-title">My Passions</h2>
+                        <p class="section-subtitle">Life is better when you have hobbies that fuel your soul</p>
+                    </div>
+                    
+                    <div class="hobbies-grid">
+                        <div class="hobby-card gaming">
+                            <div class="hobby-icon gradient-purple-pink">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                                    <path d="M12 18h.01"></path>
+                                </svg>
+                            </div>
+                            <h3>Gaming</h3>
+                            <p>Passionate about exploring virtual worlds, strategic thinking, and competitive gaming. Gaming teaches me problem-solving and quick decision-making.</p>
+                            <div class="hobby-tags">
+                                <span>Strategy Games</span>
+                                <span>Action Adventures</span>
+                                <span>Competitive Gaming</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hobby-card cricket">
+                            <div class="hobby-icon gradient-green-teal">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                    <path d="M4 22h16"></path>
+                                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                </svg>
+                            </div>
+                            <h3>Cricket</h3>
+                            <p>Cricket is more than a sport - it's a passion that teaches teamwork, patience, and the art of handling pressure in crucial moments.</p>
+                            <div class="hobby-tags">
+                                <span>Team Spirit</span>
+                                <span>Strategic Thinking</span>
+                                <span>Mental Toughness</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hobby-card anime">
+                            <div class="hobby-icon gradient-blue-cyan">
+                                <span class="anime-icon">ア</span>
+                            </div>
+                            <h3>Anime</h3>
+                            <p>Anime opens up worlds of imagination and storytelling. It inspires creativity, teaches life lessons, and shows that dreams can become reality.</p>
+                            <div class="hobby-tags">
+                                <span>Creative Inspiration</span>
+                                <span>Cultural Appreciation</span>
+                                <span>Storytelling Art</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="balance-section">
+                        <h3>The Perfect Balance</h3>
+                        <p>These hobbies aren't just pastimes - they're integral parts of who I am. Gaming sharpens my analytical mind, cricket keeps me physically active and socially connected, and anime fuels my imagination and creativity. Together, they create a well-rounded perspective that I bring to everything I do, including my programming.</p>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="nav-btn prev" onclick="prevSlide()">← Previous</button>
+                        <button class="nav-btn next" onclick="nextSlide()">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Contact -->
+        <div class="slide" id="slide-5">
+            <div class="slide-content contact-slide">
+                <div class="animated-bg contact-bg">
+                    <div class="spinning-ring ring-1"></div>
+                    <div class="spinning-ring ring-2"></div>
+                    <div class="spinning-ring ring-3"></div>
+                </div>
+                
+                <div class="container">
+                    <div class="section-header">
+                        <div class="contact-icons">
+                            <div class="icon-container gradient-cyan-blue">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="icon-container gradient-blue-purple">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                            </div>
+                            <div class="icon-container gradient-purple-pink">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                                    <path d="M12 18h.01"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h2 class="section-title">Let's Connect!</h2>
+                        <p class="section-subtitle">Ready to start something amazing together?</p>
+                    </div>
+                    
+                    <div class="contact-grid">
+                        <div class="contact-card">
+                            <h3>Get In Touch</h3>
+                            <div class="contact-item">
+                                <h4>Professional Inquiries</h4>
+                                <p>Looking for a passionate developer with fresh perspectives and diverse interests? Let's discuss how we can work together!</p>
+                            </div>
+                            <div class="contact-item">
+                                <h4>Collaboration</h4>
+                                <p>Whether it's coding projects, gaming sessions, or cricket matches - I'm always open to new connections and collaborations.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h3>What's Next?</h3>
+                            <div class="contact-item">
+                                <h4>Current Focus</h4>
+                                <ul>
+                                    <li>Advancing my Java programming skills</li>
+                                    <li>Exploring new gaming technologies</li>
+                                    <li>Building innovative projects</li>
+                                    <li>Learning from industry experts</li>
+                                </ul>
+                            </div>
+                            <div class="learning-note">
+                                <h4>Always Learning</h4>
+                                <p>Every day is an opportunity to grow, whether through code, games, or life experiences.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="thank-you">
+                        <h3>Thank You!</h3>
+                        <p>Thanks for taking the time to explore my portfolio. I hope you've gotten a good sense of who I am - not just as a developer, but as a person with diverse passions and a genuine love for learning and growing.</p>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="nav-btn prev" onclick="prevSlide()">← Previous</button>
+                        <button class="cta-button restart" onclick="restartJourney()">↻ Restart Journey</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-dots">
+            <div class="dot active" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+            <div class="dot" onclick="goToSlide(3)"></div>
+            <div class="dot" onclick="goToSlide(4)"></div>
+            <div class="dot" onclick="goToSlide(5)"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressDots();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key >= '1' && e.key <= '5') {
+                    e.preventDefault();
+                    goToSlide(parseInt(e.key));
+                }
+            });
+            
+            // Add touch/swipe support
+            let startX = 0;
+            let endX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                startX = e.changedTouches[0].screenX;
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                endX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const threshold = 50;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > threshold) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            }
+        });
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        function goToSlide(slideNumber) {
+            if (slideNumber < 1 || slideNumber > totalSlides) return;
+            
+            const currentSlideElement = document.getElementById(`slide-${currentSlide}`);
+            currentSlideElement.classList.remove('active');
+            
+            if (slideNumber > currentSlide) {
+                currentSlideElement.classList.add('prev');
+            } else {
+                currentSlideElement.classList.remove('prev');
+            }
+            
+            currentSlide = slideNumber;
+            
+            const newSlideElement = document.getElementById(`slide-${currentSlide}`);
+            newSlideElement.classList.add('active');
+            newSlideElement.classList.remove('prev');
+            
+            updateProgressDots();
+            triggerSlideAnimations(currentSlide);
+        }
+
+        function updateProgressDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index + 1 === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function triggerSlideAnimations(slideNumber) {
+            const slide = document.getElementById(`slide-${slideNumber}`);
+            const animatedElements = slide.querySelectorAll('[class*="animate"]');
+            
+            animatedElements.forEach(element => {
+                element.style.animation = 'none';
+                element.offsetHeight;
+                element.style.animation = null;
+            });
+        }
+
+        function restartJourney() {
+            goToSlide(1);
+        }
+
+        // Add interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.about-card, .education-card, .hobby-card, .contact-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            const buttons = document.querySelectorAll('button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(2);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // Loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
